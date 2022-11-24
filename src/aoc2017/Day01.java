@@ -12,7 +12,7 @@ public class Day01 {
     }
 
     public static int problem1(String filename) throws IOException {
-        List<Integer> input = FileReader.getInputAsIntegerList(filename);
+        List<Integer> input = FileReader.getLineAsIntegerList(filename);
         int sum = 0;
 
         for (int i = 0; i < input.size() - 1; i++) {
@@ -23,7 +23,7 @@ public class Day01 {
     }
 
     public static int problem2(String filename) throws IOException {
-        List<Integer> input = FileReader.getInputAsIntegerList(filename);
+        List<Integer> input = FileReader.getLineAsIntegerList(filename);
         int sum = 0;
 
         for (int i = 0; i < input.size(); i++) {
