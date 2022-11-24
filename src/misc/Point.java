@@ -2,7 +2,7 @@ package misc;
 
 import java.util.Objects;
 
-public class Point {
+public class Point implements Comparable<Point> {
     private int x;
     private int y;
 
@@ -67,6 +67,15 @@ public class Point {
         decY(1);
     }
 
+    public void reset() {
+        this.x = 0;
+        this.y = 0;
+    }
+
+    public int getManhattenDistance() {
+        return Math.abs(this.x) + Math.abs(this.y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,5 +93,10 @@ public class Point {
     @Override
     public String toString() {
         return String.format("(%d, %d)", this.x, this.y);
+    }
+
+    @Override
+    public int compareTo(Point point) {
+        return Integer.compare(getManhattenDistance(), point.getManhattenDistance());
     }
 }
