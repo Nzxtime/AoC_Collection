@@ -8,10 +8,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Day02 {
+public class Day05 {
     public static void main(String[] args) throws IOException {
-        problem1("resources/2019/2019_02.txt");
-        problem2("resources/2019/2019_02.txt");
+        problem1("resources/2019/2019_05.txt");
+        problem2("resources/2019/2019_05.txt");
     }
 
     public static void problem1(String filename) throws IOException {
@@ -19,12 +19,9 @@ public class Day02 {
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
-        input.set(1, 12);
-        input.set(2, 2);
-
         Intcode intcode = new Intcode(input);
         while (intcode.getTask() != Intcode.Task.HALT) {
-            intcode.executeTask();
+            intcode.executeTask(1);
         }
     }
 
@@ -39,7 +36,7 @@ public class Day02 {
                 input.set(2, j);
                 Intcode intcode = new Intcode(new ArrayList<>(input), 19690720);
                 while (intcode.getTask() != Intcode.Task.HALT) {
-                    intcode.executeTask();
+                    intcode.executeTask(1);
                 }
             }
         }
@@ -81,7 +78,7 @@ public class Day02 {
             this.required = required;
         }
 
-        public void executeTask() {
+        public void executeTask(int input) {
             int task = codes.get(this.instructionPointer);
             int a = codes.get(codes.get(this.instructionPointer + 1));
             int b = codes.get(codes.get(this.instructionPointer + 2));
