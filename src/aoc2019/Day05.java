@@ -38,35 +38,7 @@ public class Day05 {
 
     private static class Intcode {
         public enum Task {
-            ADD {
-                @Override
-                int action(int a, int b) {
-                    return a + b;
-                }
-            }, MULTIPLY {
-                @Override
-                int action(int a, int b) {
-                    return a * b;
-                }
-            }, INPUT {
-                @Override
-                int action(int a, int b) {
-                    return a;
-                }
-            }, OUTPUT {
-                @Override
-                int action(int a, int b) {
-                    System.out.println(a);
-                    return 0;
-                }
-            }, HALT {
-                @Override
-                int action(int a, int b) {
-                    return -1;
-                }
-            };
-
-            abstract int action(int a, int b);
+            ADD, MULTIPLY, INPUT, OUTPUT, HALT;
         }
 
         private int instructionPointer = 0;
@@ -92,50 +64,53 @@ public class Day05 {
             int a = parameterModes[0] == 0 ? codes.get(this.instructionPointer + 1) : this.instructionPointer + 1;
             int b = parameterModes[1] == 0 ? codes.get(this.instructionPointer + 2) : this.instructionPointer + 2;
             int c = parameterModes[2] == 0 ? codes.get(this.instructionPointer + 3) : this.instructionPointer + 3;
-            //System.out.printf("task: %d, opcode: %d, parameterModes: %s\n   %d, %d, %d\n", task, opcode, Arrays.toString(parameterModes), a, b, c);
             System.out.printf("task: %d, opcode: %d, modes: %s, a: %d,b: %d,c: %d\n", task, opcode, Arrays.toString(parameterModes), a, b, c);
 
             switch (opcode) {
                 case 1:
                     this.task = Task.ADD;
-                    codes.set(codes.get(this.instructionPointer + 3), this.task.action(codes.get(a), codes.get(b)));
+                    System.out.println("+1+" + codes.get(a) + "." + codes.get(b) + ">" + (codes.get(a) + codes.get(b)));
+                    codes.set(codes.get(this.instructionPointer + 3), codes.get(a) + codes.get(b));
                     this.instructionPointer += 4;
                     break;
                 case 2:
                     this.task = Task.MULTIPLY;
-                    codes.set(codes.get(this.instructionPointer + 3), this.task.action(codes.get(a), codes.get(b)));
+                    System.out.println("+2+" + codes.get(a) + "." + codes.get(b) + ">" + (codes.get(a) * codes.get(b)));
+                    codes.set(codes.get(this.instructionPointer + 3), codes.get(a) * codes.get(b));
                     this.instructionPointer += 4;
                     break;
                 case 3:
                     this.task = Task.INPUT;
+                    System.out.println("+3+" + codes.get(a) + "." + input);
                     codes.set(codes.get(this.instructionPointer + 1), input);
                     this.instructionPointer += 2;
                     break;
                 case 4:
                     this.task = Task.OUTPUT;
-                    this.task.action(codes.get(this.instructionPointer + 1), b);
+                    System.out.println(codes.get(this.instructionPointer + 1));
                     this.instructionPointer += 2;
                     break;
                 case 5:
+                    System.out.print("+5+" + codes.get(a) + "." + codes.get(b) + ">" + (codes.get(a) != 0));
                     if (codes.get(a) != 0) this.instructionPointer = codes.get(b);
                     else this.instructionPointer += 3;
+                    System.out.println(">" + this.instructionPointer);
                     break;
                 case 6:
-                    if (codes.get(a) == 0) {
-                        System.out.println("-" + codes.get(a) + "-(0)" + this.instructionPointer);
-                        this.instructionPointer = codes.get(b);
-                    } else {
-                        System.out.println("-" + codes.get(a) + "-(!0)" + this.instructionPointer);
-                        this.instructionPointer += 3;
-                    }
+                    System.out.print("+6+" + codes.get(a) + "." + codes.get(b) + ">" + (codes.get(a) == 0));
+                    if (codes.get(a) == 0) this.instructionPointer = codes.get(b);
+                    else this.instructionPointer += 3;
+                    System.out.println(">" + this.instructionPointer);
                     break;
                 case 7:
+                    System.out.println("+7+" + codes.get(a) + "." + codes.get(b) + ">" + (codes.get(a) < codes.get(b)));
                     codes.set(codes.get(c), codes.get(a) < codes.get(b) ? 1 : 0);
                     this.instructionPointer += 4;
                     break;
                 case 8:
                     int value1 = codes.get(a);
                     int value2 = codes.get(b);
+                    System.out.println("+8+" + value1 + "." + value2 + ">" + (value1 == value2));
                     codes.set(codes.get(c), value1 == value2 ? 1 : 0);
                     this.instructionPointer += 4;
                     break;
