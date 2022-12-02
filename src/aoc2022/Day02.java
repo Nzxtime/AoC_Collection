@@ -8,6 +8,7 @@ import java.util.List;
 public class Day02 {
     public static void main(String[] args) throws IOException {
         System.out.println(problem1("resources/2022/2022_02.txt"));
+        System.out.println(problem2("resources/2022/2022_02.txt"));
     }
 
     public static int problem1(String filename) throws IOException {
@@ -15,8 +16,21 @@ public class Day02 {
 
         int points = 0;
         for (String s : input) {
-            RPSGame temp = new RPSGame(s);
+            RPSGame temp = new RPSGame(s, 1);
 
+            points += temp.getPointsForPlayer2();
+        }
+
+        return points;
+    }
+
+    public static int problem2(String filename) throws IOException {
+        List<String> input = FileReader.readInput(filename);
+
+        int points = 0;
+        for (String s : input) {
+            RPSGame temp = new RPSGame(s, 2);
+            temp.setNeededAction();
             points += temp.getPointsForPlayer2();
         }
 
@@ -25,16 +39,18 @@ public class Day02 {
 
     private static class RPSGame {
         private char player1;
+        private char outcome;
+
         private char player2;
 
-        public RPSGame(char player1, char player2) {
-            this.player1 = player1;
-            this.player2 = player2;
-        }
-
-        public RPSGame(String s) {
-            this.player1 = s.split(" ")[0].charAt(0);
-            this.player2 = s.split(" ")[1].charAt(0);
+        public RPSGame(String s, int flag) {
+            if (flag == 1) {
+                this.player1 = s.split(" ")[0].charAt(0);
+                this.player2 = s.split(" ")[1].charAt(0);
+            } else if (flag == 2) {
+                this.player1 = s.split(" ")[0].charAt(0);
+                this.outcome = s.split(" ")[1].charAt(0);
+            }
         }
 
         public int getWinner() {
@@ -92,6 +108,50 @@ public class Day02 {
             }
 
             return points;
+        }
+
+        private void setNeededAction() {
+            switch (player1) {
+                case 'A': // Rock
+                    switch (outcome) {
+                        case 'X': // Lose
+                            this.player2 = 'Z'; // Scissors
+                            break;
+                        case 'Y': // Draw
+                            this.player2 = 'X'; // Rock
+                            break;
+                        case 'Z': // Win
+                            this.player2 = 'Y'; // Paper
+                            break;
+                    }
+                    break;
+                case 'B': // Paper
+                    switch (outcome) {
+                        case 'X': // Lose
+                            this.player2 = 'X'; // Rock
+                            break;
+                        case 'Y': // Draw
+                            this.player2 = 'Y'; // Paper
+                            break;
+                        case 'Z': // Win
+                            this.player2 = 'Z'; // Scissors
+                            break;
+                    }
+                    break;
+                case 'C': // Scissors
+                    switch (outcome) {
+                        case 'X': // Lose
+                            this.player2 = 'Y'; // Paper
+                            break;
+                        case 'Y': // Draw
+                            this.player2 = 'Z'; // Scissors
+                            break;
+                        case 'Z': // Win
+                            this.player2 = 'X'; // Rock
+                            break;
+                    }
+                    break;
+            }
         }
     }
 }
