@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class Day05 {
     public static void main(String[] args) throws IOException {
         //problem1("resources/2019/2019_05.txt");
+        //problem2("resources/2019/test.txt");
         problem2("resources/2019/2019_05.txt");
     }
 
@@ -87,7 +88,7 @@ public class Day05 {
                     break;
                 case 4:
                     this.task = Task.OUTPUT;
-                    System.out.println(codes.get(this.instructionPointer + 1));
+                    System.out.println(codes.get(codes.get(this.instructionPointer + 1)));
                     this.instructionPointer += 2;
                     break;
                 case 5:
@@ -104,14 +105,14 @@ public class Day05 {
                     break;
                 case 7:
                     System.out.println("+7+" + codes.get(a) + "." + codes.get(b) + ">" + (codes.get(a) < codes.get(b)));
-                    codes.set(codes.get(c), codes.get(a) < codes.get(b) ? 1 : 0);
+                    codes.set(codes.get(this.instructionPointer + 3), codes.get(a) < codes.get(b) ? 1 : 0);
                     this.instructionPointer += 4;
                     break;
                 case 8:
                     int value1 = codes.get(a);
                     int value2 = codes.get(b);
                     System.out.println("+8+" + value1 + "." + value2 + ">" + (value1 == value2));
-                    codes.set(codes.get(c), value1 == value2 ? 1 : 0);
+                    codes.set(codes.get(this.instructionPointer + 3), value1 == value2 ? 1 : 0);
                     this.instructionPointer += 4;
                     break;
                 case 99:
