@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 public class Day05 {
     public static void main(String[] args) throws IOException {
         problem1("resources/2022/2022_05.txt");
+        problem2("resources/2022/2022_05.txt");
     }
 
     public static void problem1(String filename) throws IOException {
@@ -38,6 +39,40 @@ public class Day05 {
                 int destination = Integer.parseInt(matcher.group("destination")) - 1;
 
                 stacks.get(source).repeatedMoveCargoToOther(stacks.get(destination), amountOfMoves);
+                printStackListFancy(stacks);
+            }
+        }
+
+        for (Stack stack : stacks) {
+            System.out.print(stack.getLastCrate());
+        }
+    }
+
+    public static void problem2(String filename) throws IOException {
+        List<String> input = FileReader.readInput(filename);
+        int index = 0;
+        for (String s : input) {
+            if (!s.isEmpty()) {
+                index++;
+            } else break;
+        }
+        List<String> moves = input.subList(index + 1, input.size());
+        List<Stack> stacks = Stack.generateStacks(input.subList(0, index));
+
+        printStackListFancy(stacks);
+
+        Pattern pattern = Pattern.compile("\\D+(?<moves>\\d+)\\D+(?<source>\\d+)\\D+(?<destination>\\d+)");
+        Matcher matcher;
+
+        for (String move : moves) {
+            matcher = pattern.matcher(move);
+            System.out.println(move);
+            if (matcher.matches()) {
+                int amountOfMoves = Integer.parseInt(matcher.group("moves"));
+                int source = Integer.parseInt(matcher.group("source")) - 1;
+                int destination = Integer.parseInt(matcher.group("destination")) - 1;
+
+                stacks.get(source).moveMultipleCratesToOther(stacks.get(destination), amountOfMoves);
                 printStackListFancy(stacks);
             }
         }
@@ -106,6 +141,12 @@ public class Day05 {
             for (int i = 0; i < moves; i++) {
                 moveCrateToOther(other);
             }
+        }
+
+        public void moveMultipleCratesToOther(Stack other, int moves) {
+            Stack temp = new Stack();
+            repeatedMoveCargoToOther(temp, moves);
+            temp.repeatedMoveCargoToOther(other, moves);
         }
 
         public String getLastCrate() {
