@@ -28,6 +28,14 @@ These are my solutions for [AoC](https://adventofcode.com/)
 <!--- advent_readme_stars_2018 table --->
 
 <!--- advent_readme_stars_2017 table --->
+### 2017 Results
+
+| Day | Part 1 | Part 2 |
+| :---: | :---: | :---: |
+| [Day 1](https://adventofcode.com/2017/day/1) | ⭐ | ⭐ |
+| [Day 2](https://adventofcode.com/2017/day/2) | ⭐ | ⭐ |
+| [Day 3](https://adventofcode.com/2017/day/3) | ⭐ | ⭐ |
+<!--- advent_readme_stars_2017 table --->
 
 <!--- advent_readme_stars_2016 table --->
 ### 2016 Results
