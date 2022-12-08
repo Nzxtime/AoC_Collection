@@ -12,7 +12,7 @@ public class FileReader {
         return Files.readAllLines(Paths.get(filename));
     }
 
-    public static List<Integer> readInputAsIntegerList(String filename) throws IOException {
+    public static List<Integer> getInputAsIntegerList(String filename) throws IOException {
         return readInput(filename).stream().map(Integer::parseInt).collect(Collectors.toList());
     }
 
@@ -21,6 +21,18 @@ public class FileReader {
         for (int i : readInput(filename).get(0).toCharArray()) {
             output.add(i - 48);
         }
+        return output;
+    }
+
+    public static char[][] getInputAsCharArray(String filename) throws IOException {
+        List<String> lines = FileReader.readInput(filename);
+        char[][] output = new char[lines.size()][];
+
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            output[i] = line.toCharArray();
+        }
+
         return output;
     }
 }

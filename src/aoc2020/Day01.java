@@ -12,7 +12,7 @@ public class Day01 {
     }
 
     public static int problem1(String filename) throws IOException {
-        List<Integer> input = FileReader.readInputAsIntegerList(filename);
+        List<Integer> input = FileReader.getInputAsIntegerList(filename);
         for (int i : input) {
             for (int j : input) {
                 if (i + j == 2020) return i * j;
@@ -22,7 +22,7 @@ public class Day01 {
     }
 
     public static int problem2(String filename) throws IOException {
-        List<Integer> input = FileReader.readInputAsIntegerList(filename);
+        List<Integer> input = FileReader.getInputAsIntegerList(filename);
         for (int i : input) {
             for (int j : input) {
                 for (int k : input) {
