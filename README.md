@@ -20,6 +20,14 @@ These are my solutions for [AoC](https://adventofcode.com/)
 <!--- advent_readme_stars_2022 table --->
 
 <!--- advent_readme_stars_2021 table --->
+### 2021 Results
+
+| Day | Part 1 | Part 2 |
+| :---: | :---: | :---: |
+| [Day 1](https://adventofcode.com/2021/day/1) | ⭐ | ⭐ |
+| [Day 2](https://adventofcode.com/2021/day/2) | ⭐ | ⭐ |
+| [Day 3](https://adventofcode.com/2021/day/3) | ⭐ | ⭐ |
+<!--- advent_readme_stars_2021 table --->
 
 <!--- advent_readme_stars_2020 table --->
 ### 2020 Results
