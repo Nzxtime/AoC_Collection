@@ -36,7 +36,6 @@ public class Day03 {
         for (Point point : fabricMap.keySet()) {
             if (fabricMap.get(point).size() > 1) ids.removeAll(fabricMap.get(point));
         }
-
         return ids.stream().findFirst().get();
     }
 
