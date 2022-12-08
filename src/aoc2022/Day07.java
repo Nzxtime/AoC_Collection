@@ -14,7 +14,7 @@ public class Day07 {
 
     public static void main(String[] args) throws IOException {
         System.out.println(problem1("resources/2022/2022_07.txt"));
-        System.out.println(problem2("resources/2022/test.txt"));
+        System.out.println(problem2("resources/2022/2022_07.txt"));
     }
 
     private static void generateFilesystem(String filename) throws IOException {
