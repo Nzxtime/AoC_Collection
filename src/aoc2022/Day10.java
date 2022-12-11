@@ -126,9 +126,9 @@ public class Day10 {
             int col = super.getCycleNumber() % 40;
 
             if (Math.abs(this.sprite - col) <= 1) {
-                this.screen[row][col] = '#';
+                this.screen[row][col] = '▓';
             } else {
-                this.screen[row][col] = '.';
+                this.screen[row][col] = '░';
             }
         }
 
