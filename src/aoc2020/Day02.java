@@ -1,9 +1,10 @@
 package aoc2020;
 
 import misc.FileReader;
+import misc.Helper;
 
 import java.io.IOException;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -30,7 +31,7 @@ public class Day02 {
                 char c = matcher.group("character").charAt(0);
                 String password = matcher.group("password");
 
-                Map<Character, Integer> characterIntegerMap = generateCharacterMap(password);
+                Map<Character, Integer> characterIntegerMap = Helper.generateCharacterMap(password);
                 if (!characterIntegerMap.containsKey(c)) continue;
                 if (min <= characterIntegerMap.get(c) && max >= characterIntegerMap.get(c)) counter++;
             }
@@ -59,15 +60,5 @@ public class Day02 {
             }
         }
         return counter;
-    }
-
-    private static Map<Character, Integer> generateCharacterMap(String s) {
-        Map<Character, Integer> output = new HashMap<>();
-
-        for (char c : s.toCharArray()) {
-            output.merge(c, 1, Integer::sum);
-        }
-
-        return output;
     }
 }
