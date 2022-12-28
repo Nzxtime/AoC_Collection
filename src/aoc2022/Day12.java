@@ -9,7 +9,8 @@ import java.util.*;
 
 public class Day12 {
     public static void main(String[] args) throws IOException {
-        System.out.println(problem1("resources/2022/2022_12.txt"));
+        System.out.println(problem1("resources/2022/test.txt"));
+        //System.out.println(problem1("resources/2022/2022_12.txt"));
     }
 
     private static int problem1(String filename) throws IOException {
@@ -19,17 +20,24 @@ public class Day12 {
         for (String s : input) {
             heightMap.addRow(s);
         }
-        heightMap.setPoints();
+        heightMap.generateNodes();
 
-        heightMap.pathStep(heightMap.startCoords, new TreeSet<>());
+        System.out.println(heightMap.startNode);
+
+        System.out.println(heightMap.calculatePath());
 
         return 0;
     }
 
     private static class HeightMap {
         private List<List<Character>> map;
-        private Point startCoords;
-        private Point endCoords;
+        private Map<Point, Node> nodeMap;
+        private Node startNode;
+        private Node endNode;
+
+        private Set<Node> visitedVertices = new HashSet<>();
+
+        private Queue<Node> queue = new LinkedList<>();
 
         public HeightMap() {
             this.map = new ArrayList<>();
@@ -43,52 +51,39 @@ public class Day12 {
             addRow(Helper.stringAsCharacterList(row));
         }
 
-        public void pathStep(Point position, Set<Point> knownPoints) {
-            if (knownPoints.contains(position)) {
-                return;
-            }
-
-            //System.out.println(position);
-
-            if (position.equals(endCoords)) {
-                System.out.println("Ended " + knownPoints.size());
-            }
-            knownPoints.add(position);
-
-            for (int i = -1; i <= 1; i += 2) {
-                Point temp = new Point(position.getX() + i, position.getY());
-
-                if (temp.getX() >= 0 && temp.getX() < this.map.size() &&
-                        temp.getY() >= 0 && temp.getY() < this.map.get(temp.getX()).size()) {
-                    //System.out.printf("%c - %c\n", getCharacterForPosition(temp) + 1, getCharacterForPosition(position));
-
-                    if (getCharacterForPosition(temp) - 1 <= getCharacterForPosition(position)) {
-                        pathStep(temp, knownPoints);
-                    }
-                }
-
-                temp = new Point(position.getX(), position.getY() + i);
-
-                if (temp.getX() >= 0 && temp.getX() < this.map.size() &&
-                        temp.getY() >= 0 && temp.getY() < this.map.get(temp.getX()).size()) {
-                    //System.out.printf("%c - %c\n", getCharacterForPosition(temp) + 1, getCharacterForPosition(position));
-
-                    if (getCharacterForPosition(temp) - 1 <= getCharacterForPosition(position)) {
-                        pathStep(temp, knownPoints);
-                    }
-                }
-            }
-
-            knownPoints.remove(position);
-        }
-
-        public void setPoints() {
+        public void generateNodes() {
+            this.nodeMap = new LinkedHashMap<>();
             for (int i = 0; i < map.size(); i++) {
                 for (int j = 0; j < map.get(i).size(); j++) {
-                    if (this.startCoords == null && map.get(i).get(j) == 'S') this.startCoords = new Point(i, j);
-                    if (this.endCoords == null && map.get(i).get(j) == 'E') this.endCoords = new Point(i, j);
+                    Point a = new Point(i, j);
+                    if (this.startNode == null && map.get(i).get(j) == 'S') this.startNode = new Node(a, 'a');
+                    else if (this.endNode == null && map.get(i).get(j) == 'E')
+                        this.endNode = new Node(new Point(i, j), 'z');
+                    this.nodeMap.put(a, new Node(a, getCharacterForPosition(a)));
                 }
             }
+            for (Node value : nodeMap.values()) {
+                value.setAdjacentNodes(nodeMap);
+            }
+        }
+
+        public boolean calculatePath() {
+            this.queue.add(startNode);
+            this.visitedVertices.add(startNode);
+
+            while (!this.queue.isEmpty()) {
+                Node current = this.queue.poll();
+
+                if (current.equals(endNode)) return true;
+
+                for (Node child : current.adjacentNodes) {
+                    if (!this.visitedVertices.contains(child)) {
+                        queue.add(child);
+                        this.visitedVertices.add(child);
+                    }
+                }
+            }
+            return false;
         }
 
         public char getCharacterForPosition(Point point) {
@@ -111,40 +106,37 @@ public class Day12 {
 
     private static class Node {
         private Point point;
+        private char heightChar;
         private List<Node> adjacentNodes = new ArrayList<>();
 
-        public Node(Point point) {
+        public Node(Point point, char value) {
             this.point = point;
+            this.heightChar = value;
         }
 
-        public static void setAdjacentNodes() {
-
-        }
-    }
-
-    private static class Graph {
-        Set<Node> visitedVertices = new HashSet<>();
-        Node currentPoint;
-
-        Queue<Node> queue = new LinkedList<>();
-
-
-        public Graph(Node startPoint) {
-            currentPoint = startPoint;
-        }
-
-
-        public boolean calculatePath(Node endPoint) {
-            this.queue.add(currentPoint);
-            this.visitedVertices.add(currentPoint);
-
-            while (!this.queue.isEmpty()) {
-                Node current = this.queue.poll();
-
-                if (current.equals(endPoint)) return true;
-
+        public void setAdjacentNodes(Map<Point, Node> nodeMap) {
+            for (int i = -1; i <= 1; i += 2) {
+                checkIfAdjacent(nodeMap, i, 0);
+                checkIfAdjacent(nodeMap, 0, i);
             }
-            return false;
+        }
+
+        private void checkIfAdjacent(Map<Point, Node> nodeMap, int i, int j) {
+            Point temp = new Point(point.getX() + i, point.getY() + j);
+            if (nodeMap.containsKey(temp)) {
+                if (nodeMap.get(temp).heightChar + 1 <= this.heightChar) {
+                    adjacentNodes.add(nodeMap.get(temp));
+                }
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "point=" + point +
+                    ", heightChar=" + heightChar +
+                    ", adjacentNodes=" + adjacentNodes +
+                    '}';
         }
     }
 }
