@@ -66,6 +66,7 @@ These are my solutions for [AoC](https://adventofcode.com/)
 | [Day 1](https://adventofcode.com/2018/day/1) | ⭐ | ⭐ |
 | [Day 2](https://adventofcode.com/2018/day/2) | ⭐ | ⭐ |
 | [Day 3](https://adventofcode.com/2018/day/3) | ⭐ | ⭐ |
+| [Day 4](https://adventofcode.com/2018/day/4) | ⭐ | ⭐ |
 <!--- advent_readme_stars_2018 table --->
 
 <!--- advent_readme_stars_2017 table --->
