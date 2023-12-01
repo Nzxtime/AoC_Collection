@@ -15,4 +15,4 @@ echo %year%
 echo %day%
 
 .\aocdl.exe -year %year% -day %day% -output "resources/%year%/%year%_%day%.txt"
-git add "resources/%year%/%year%_%day%.txt"
+REM git add "resources/%year%/%year%_%day%.txt"
