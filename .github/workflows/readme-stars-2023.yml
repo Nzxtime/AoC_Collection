@@ -1,4 +1,4 @@
-name: Update README ⭐ 2015
+name: Update README ⭐ 2023
 on:
   schedule:
     - cron: "0 0/4 * * *"  # Every 4 hours
@@ -14,9 +14,9 @@ jobs:
           userId: ${{ secrets.AOC_USER_ID }}
           leaderboardId: ${{ secrets.AOC_USER_ID }}
           sessionCookie: ${{ secrets.AOC_SESSION }}
-          year: 2015
-          tableMarker: '<!--- advent_readme_stars_2015 table --->'
+          year: 2022
+          tableMarker: '<!--- advent_readme_stars_2023 table --->'
           headerPrefix: '###'
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: Update README stars of year 2015
+          commit_message: Update README stars of year 2023

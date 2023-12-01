@@ -17,6 +17,6 @@ jobs:
           year: 2020
           tableMarker: '<!--- advent_readme_stars_2020 table --->'
           headerPrefix: '###'
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Update README stars of year 2020
