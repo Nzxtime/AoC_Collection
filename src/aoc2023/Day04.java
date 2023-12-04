@@ -11,7 +11,7 @@ public class Day04 {
         System.out.println(problem2("resources/2023/2023_04.txt"));
     }
 
-    private static List<Game> generateGameList (List<String> lines) {
+    private static List<Game> generateGameList(List<String> lines) {
         List<Game> games = new ArrayList<>();
         for (String line : lines) {
             games.add(new Game(line));
@@ -44,10 +44,9 @@ public class Day04 {
             current.gameNumbers.retainAll(current.winning);
 
             if (current.gameNumbers.isEmpty()) continue;
-            for (int j = 0; j < gameAmount.get(current.id); j++) {
-                for (int i = 1; i <= current.gameNumbers.size(); i++) {
-                    gameAmount.merge(current.id + i, 1, Integer::sum);
-                }
+
+            for (int i = 1; i <= current.gameNumbers.size(); i++) {
+                gameAmount.merge(current.id + i, gameAmount.get(current.id), (prev, a) -> prev + gameAmount.get(current.id));
             }
         }
 
