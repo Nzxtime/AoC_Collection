@@ -1,7 +1,8 @@
 package aoc2022;
 
 import misc.FileReader;
-import misc.Helper;
+import misc.Graph;
+import misc.Nodes.PointNode;
 import misc.Point;
 
 import java.io.IOException;
@@ -9,134 +10,141 @@ import java.util.*;
 
 public class Day12 {
     public static void main(String[] args) throws IOException {
-        System.out.println(problem1("resources/2022/test.txt"));
-        //System.out.println(problem1("resources/2022/2022_12.txt"));
+        System.out.println(problem1("resources/2022/2022_12.txt"));
+        System.out.println(problem2("resources/2022/2022_12.txt"));
     }
 
-    private static int problem1(String filename) throws IOException {
-        List<String> input = FileReader.readInput(filename);
-        HeightMap heightMap = new HeightMap();
+    private static void fillGraph(HGraph graph, char[][] input) {
+        Point current = new Point();
+        Point[] directions = new Point[]{new Point(0, -1), new Point(0, 1), new Point(-1, 0), new Point(1, 0)};
 
-        for (String s : input) {
-            heightMap.addRow(s);
-        }
-        heightMap.generateNodes();
+        for (int i = 0; i < input.length; i++) {
+            current.setY(0);
+            for (int j = 0; j < input[i].length; j++) {
+                graph.addNode(new PointNode(current));
 
-        System.out.println(heightMap.startNode);
-
-        System.out.println(heightMap.calculatePath());
-
-        return 0;
-    }
-
-    private static class HeightMap {
-        private List<List<Character>> map;
-        private Map<Point, Node> nodeMap;
-        private Node startNode;
-        private Node endNode;
-
-        private Set<Node> visitedVertices = new HashSet<>();
-
-        private Queue<Node> queue = new LinkedList<>();
-
-        public HeightMap() {
-            this.map = new ArrayList<>();
-        }
-
-        public void addRow(List<Character> row) {
-            map.add(row);
-        }
-
-        public void addRow(String row) {
-            addRow(Helper.stringAsCharacterList(row));
-        }
-
-        public void generateNodes() {
-            this.nodeMap = new LinkedHashMap<>();
-            for (int i = 0; i < map.size(); i++) {
-                for (int j = 0; j < map.get(i).size(); j++) {
-                    Point a = new Point(i, j);
-                    if (this.startNode == null && map.get(i).get(j) == 'S') this.startNode = new Node(a, 'a');
-                    else if (this.endNode == null && map.get(i).get(j) == 'E')
-                        this.endNode = new Node(new Point(i, j), 'z');
-                    this.nodeMap.put(a, new Node(a, getCharacterForPosition(a)));
+                char height = input[i][j];
+                if (height == 'S') {
+                    graph.setStart(new PointNode(current));
+                    input[i][j] = 'a';
                 }
+                if (height == 'E') {
+                    graph.setEnd(new PointNode(current));
+                    input[i][j] = 'z';
+                }
+                current.incY();
             }
-            for (Node value : nodeMap.values()) {
-                value.setAdjacentNodes(nodeMap);
-            }
+            current.incX();
         }
 
-        public boolean calculatePath() {
-            this.queue.add(startNode);
-            this.visitedVertices.add(startNode);
+        for (int i = 0; i < input.length; i++) {
+            for (int j = 0; j < input[i].length; j++) {
+                current.setX(i);
+                current.setY(j);
+                char height = input[i][j];
 
-            while (!this.queue.isEmpty()) {
-                Node current = this.queue.poll();
-
-                if (current.equals(endNode)) return true;
-
-                for (Node child : current.adjacentNodes) {
-                    if (!this.visitedVertices.contains(child)) {
-                        queue.add(child);
-                        this.visitedVertices.add(child);
+                for (Point direction : directions) {
+                    Point temp = new Point(i + direction.getX(), j + direction.getY());
+                    if (temp.getX() >= 0 && temp.getX() < input.length && temp.getY() >= 0 && temp.getY() < input[i].length) {
+                        char tHeight = input[temp.getX()][temp.getY()];
+                        int diff = height - tHeight;
+                        if (diff >= -1) graph.addEdge(new PointNode(current), new PointNode(temp));
                     }
                 }
             }
-            return false;
-        }
-
-        public char getCharacterForPosition(Point point) {
-            if (this.map.get(point.getX()).get(point.getY()) == 'S') return 'a';
-            else if (this.map.get(point.getX()).get(point.getY()) == 'E') return 'z';
-            return this.map.get(point.getX()).get(point.getY());
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for (List<Character> characters : map) {
-                stringBuilder.append(characters).append("\n");
-            }
-
-            return stringBuilder.toString().trim();
         }
     }
 
-    private static class Node {
-        private Point point;
-        private char heightChar;
-        private List<Node> adjacentNodes = new ArrayList<>();
+    private static int problem1(String filename) throws IOException {
+        char[][] input = FileReader.getInputAsCharArray(filename);
+        HGraph graph = new HGraph("2022_12_1");
+        fillGraph(graph, input);
 
-        public Node(Point point, char value) {
-            this.point = point;
-            this.heightChar = value;
-        }
+        return graph.shortestPath().size();
+    }
 
-        public void setAdjacentNodes(Map<Point, Node> nodeMap) {
-            for (int i = -1; i <= 1; i += 2) {
-                checkIfAdjacent(nodeMap, i, 0);
-                checkIfAdjacent(nodeMap, 0, i);
+    private static List<Point> findAllA(char[][] input) {
+        List<Point> output = new ArrayList<>();
+        for (int i = 0; i < input.length; i++) {
+            for (int j = 0; j < input[i].length; j++) {
+                if (input[i][j] == 'a') output.add(new Point(i, j));
             }
         }
+        return output;
+    }
 
-        private void checkIfAdjacent(Map<Point, Node> nodeMap, int i, int j) {
-            Point temp = new Point(point.getX() + i, point.getY() + j);
-            if (nodeMap.containsKey(temp)) {
-                if (nodeMap.get(temp).heightChar + 1 <= this.heightChar) {
-                    adjacentNodes.add(nodeMap.get(temp));
-                }
-            }
+    private static int problem2(String filename) throws IOException {
+        char[][] input = FileReader.getInputAsCharArray(filename);
+        List<Point> possibleStartingLocations = findAllA(input);
+
+        HGraph temp = new HGraph("2022_12_1");
+        fillGraph(temp, input);
+        Point end = temp.end.getIdentifier();
+        input[temp.start.getIdentifier().getX()][temp.start.getIdentifier().getY()] = 'a';
+        int lowest = temp.shortestPath().size();
+
+        for (Point current : possibleStartingLocations) {
+            input[current.getX()][current.getY()] = 'S';
+            input[end.getX()][end.getY()] = 'E';
+            temp = new HGraph(current.toString());
+            fillGraph(temp, input);
+            if (temp.shortestPath().size() > 0 && temp.shortestPath().size() < lowest)
+                lowest = temp.shortestPath().size();
+            input[current.getX()][current.getY()] = 'a';
+        }
+
+        return lowest;
+    }
+
+    private static class HGraph extends Graph {
+        private PointNode start;
+        private PointNode end;
+
+        public HGraph(String name) {
+            super(name);
+        }
+
+        public PointNode getStart() {
+            return start;
+        }
+
+        public void setStart(PointNode start) {
+            this.start = start;
+        }
+
+        public PointNode getEnd() {
+            return end;
+        }
+
+        public void setEnd(PointNode end) {
+            this.end = end;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            HGraph hGraph = (HGraph) o;
+            return Objects.equals(start, hGraph.start) && Objects.equals(end, hGraph.end);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(start, end);
         }
 
         @Override
         public String toString() {
-            return "Node{" +
-                    "point=" + point +
-                    ", heightChar=" + heightChar +
-                    ", adjacentNodes=" + adjacentNodes +
+            return "HGraph{" +
+                    "start=" + start +
+                    ", end=" + end +
+                    ", name='" + name + '\'' +
+                    ", adjacencyList=" + adjacencyList +
                     '}';
+        }
+
+        public List<PointNode> shortestPath() {
+            return super.shortestPath(this.start, this.end);
         }
     }
 }
