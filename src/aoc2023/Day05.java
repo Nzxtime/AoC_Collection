@@ -7,8 +7,8 @@ import java.util.*;
 
 public class Day05 {
     public static void main(String[] args) throws IOException {
-        System.out.println(problem1("resources/2023/test.txt"));
-        //System.out.println(problem1("resources/2023/2023_05.txt"));
+        //System.out.println(problem1("resources/2023/test.txt"));
+        System.out.println(problem1("resources/2023/2023_05.txt"));
         //System.out.println(problem2("resources/2023/2023_05.txt"));
     }
 
@@ -23,8 +23,8 @@ public class Day05 {
                 mapIndex++;
                 output.add(new Mapping());
             } else {
-                long source = Long.parseLong(current.split("\s+")[0]);
-                long dest = Long.parseLong(current.split("\s+")[1]);
+                long dest = Long.parseLong(current.split("\s+")[0]);
+                long source = Long.parseLong(current.split("\s+")[1]);
                 long range = Long.parseLong(current.split("\s+")[2]);
                 Mapping cMap = output.get(mapIndex);
                 cMap.addLine(new Line(source, dest, range));
@@ -47,7 +47,7 @@ public class Day05 {
             long next = seed;
             for (int i = 0; i < maps.size(); i++) {
                 next = maps.get(i).findMapping(next);
-                System.out.println(next);
+                System.out.printf("%d %s\n", next, maps.get(i).toString());
             }
             if (next < lowestLoc) lowestLoc = next;
         }
@@ -71,7 +71,7 @@ public class Day05 {
         }
 
         boolean partOfLine(long a) {
-            return a >= source && a <= source + range;
+            return a >= source && a < source + range;
         }
 
         long mapsTo(long a) {
