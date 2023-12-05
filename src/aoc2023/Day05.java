@@ -7,9 +7,8 @@ import java.util.*;
 
 public class Day05 {
     public static void main(String[] args) throws IOException {
-        //System.out.println(problem1("resources/2023/test.txt"));
         System.out.println(problem1("resources/2023/2023_05.txt"));
-        //System.out.println(problem2("resources/2023/2023_05.txt"));
+        System.out.println(problem2("resources/2023/2023_05.txt"));
     }
 
     private static List<Mapping> generateMappings(List<String> input) {
@@ -28,7 +27,7 @@ public class Day05 {
                 long range = Long.parseLong(current.split("\s+")[2]);
                 Mapping cMap = output.get(mapIndex);
                 cMap.addLine(new Line(source, dest, range));
-                System.out.printf("%d: %d - %d - %d\n", mapIndex, source, dest, range);
+                //System.out.printf("%d: %d - %d - %d\n", mapIndex, source, dest, range);
             }
         }
         return output;
@@ -37,26 +36,44 @@ public class Day05 {
     private static long problem1(String filename) throws IOException {
         List<String> lines = FileReader.readInput(filename);
         long[] seeds = Arrays.stream(lines.get(0).split(":")[1].trim().split("\s+")).mapToLong(Long::parseLong).toArray();
-        System.out.println(Arrays.toString(seeds));
+        //System.out.println(Arrays.toString(seeds));
         List<Mapping> maps = generateMappings(lines);
-        System.out.println(maps);
+        //System.out.println(maps);
 
+        return getLowestLoc(seeds, maps);
+    }
+
+    private static long problem2(String filename) throws IOException {
+        List<String> lines = FileReader.readInput(filename);
+        long[] seeds = Arrays.stream(lines.get(0).split(":")[1].trim().split("\s+")).mapToLong(Long::parseLong).toArray();
+        List<Long> moreSeeds = new ArrayList<>();
+        for (int i = 0; i < seeds.length; i++) {
+            long base = seeds[i++];
+            long range = seeds[i];
+            for (int j = 0; j < range; j++) {
+                moreSeeds.add(base + j);
+            }
+        }
+
+        //System.out.println(moreSeeds);
+        List<Mapping> maps = generateMappings(lines);
+        //System.out.println(maps);
+
+        return getLowestLoc(moreSeeds.stream().mapToLong(Long::longValue).toArray(), maps);
+    }
+
+    private static long getLowestLoc(long[] seeds, List<Mapping> maps) {
         long lowestLoc = Long.MAX_VALUE;
         for (long seed : seeds) {
-            System.out.printf("\n%d\n", seed);
+            //System.out.printf("\n%d\n", seed);
             long next = seed;
             for (int i = 0; i < maps.size(); i++) {
                 next = maps.get(i).findMapping(next);
-                System.out.printf("%d %s\n", next, maps.get(i).toString());
+                //System.out.printf("%d %s\n", next, maps.get(i).toString());
             }
             if (next < lowestLoc) lowestLoc = next;
         }
-
         return lowestLoc;
-    }
-
-    private static int problem2(String filename) throws IOException {
-        return 2;
     }
 
     static class Line {
