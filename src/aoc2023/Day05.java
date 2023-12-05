@@ -46,20 +46,10 @@ public class Day05 {
     private static long problem2(String filename) throws IOException {
         List<String> lines = FileReader.readInput(filename);
         long[] seeds = Arrays.stream(lines.get(0).split(":")[1].trim().split("\s+")).mapToLong(Long::parseLong).toArray();
-        List<Long> moreSeeds = new ArrayList<>();
-        for (int i = 0; i < seeds.length; i++) {
-            long base = seeds[i++];
-            long range = seeds[i];
-            for (int j = 0; j < range; j++) {
-                moreSeeds.add(base + j);
-            }
-        }
-
-        //System.out.println(moreSeeds);
+        List<SeedEntry> seedEntries = SeedEntry.fill(seeds);
         List<Mapping> maps = generateMappings(lines);
-        //System.out.println(maps);
 
-        return getLowestLoc(moreSeeds.stream().mapToLong(Long::longValue).toArray(), maps);
+        return revFind(seedEntries, maps);
     }
 
     private static long getLowestLoc(long[] seeds, List<Mapping> maps) {
@@ -76,6 +66,49 @@ public class Day05 {
         return lowestLoc;
     }
 
+    private static long revFind(List<SeedEntry> seedEntries, List<Mapping> maps) {
+        long max = maps.get(maps.size() - 1).getMax();
+        //System.out.println(max);
+        for (int i = 0; i < max; i++) {
+            long next = i;
+            long dist = i;
+            for (int j = maps.size() - 1; j >= 0; j--) {
+                next = maps.get(j).findRevMapping(next);
+                //System.out.printf("%d %s\n", next, maps.get(j).toString());
+            }
+            for (SeedEntry seedEntry : seedEntries) {
+               if (seedEntry.partOfLine(next)) return dist;
+            }
+        }
+        return -1;
+    }
+
+    static class SeedEntry {
+        long source;
+        long range;
+
+        public SeedEntry(long source, long range) {
+            this.source = source;
+            this.range = range;
+        }
+
+        boolean partOfLine(long a) {
+            return a >= source && a < source + range;
+        }
+
+        static List<SeedEntry> fill(long[] seeds) {
+            List<SeedEntry> list = new ArrayList<>();
+            for (int i = 0; i + 1 < seeds.length; i+=2) {
+                list.add(new SeedEntry(seeds[i], seeds[i + 1]));
+            }
+            return list;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("[%-%d]", source, range);
+        }
+    }
     static class Line {
         long source;
         long dest;
@@ -91,9 +124,18 @@ public class Day05 {
             return a >= source && a < source + range;
         }
 
+        boolean revPartOfLine(long a) {
+            return a >= dest && a < dest + range;
+        }
+
         long mapsTo(long a) {
             long diff = a - source;
             return dest + diff;
+        }
+
+        long mapsFrom(long a) {
+            long diff = a - dest;
+            return source + diff;
         }
 
         @Override
@@ -115,6 +157,19 @@ public class Day05 {
                 return line.mapsTo(a);
             }
             return a;
+        }
+
+        long findRevMapping(long a) {
+            for (Line line : lines) {
+                if (!line.revPartOfLine(a)) continue;
+                return line.mapsFrom(a);
+            }
+            return a;
+        }
+
+        long getMax() {
+            Line temp = lines.stream().max(Comparator.comparing(x -> x.dest + x.range)).get();
+            return temp.dest + temp.range;
         }
 
         @Override
