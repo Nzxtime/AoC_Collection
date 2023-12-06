@@ -22,9 +22,9 @@ public class Day05 {
                 mapIndex++;
                 output.add(new Mapping());
             } else {
-                long dest = Long.parseLong(current.split("\s+")[0]);
-                long source = Long.parseLong(current.split("\s+")[1]);
-                long range = Long.parseLong(current.split("\s+")[2]);
+                long dest = Long.parseLong(current.split("\\s+")[0]);
+                long source = Long.parseLong(current.split("\\s+")[1]);
+                long range = Long.parseLong(current.split("\\s+")[2]);
                 Mapping cMap = output.get(mapIndex);
                 cMap.addLine(new Line(source, dest, range));
                 //System.out.printf("%d: %d - %d - %d\n", mapIndex, source, dest, range);
