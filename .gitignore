@@ -144,7 +144,7 @@ hs_err_pid*
 replay_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java
-/aocdl.exe
+/aocdl*
 
 # Don't commit resources - not allowed by creator of AoC
 resources/*
