@@ -3,6 +3,7 @@ package aoc2023;
 import misc.FileReader;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,46 @@ public class Day08 {
     }
 
     private static long problem2(String filename) throws IOException {
+        List<String> lines = FileReader.readInput(filename);
+        List<NetworkEntry> network = new ArrayList<>();
+        lines.stream().filter(x -> x.contains("=")).forEach(y -> network.add(new NetworkEntry(y)));
+        Map<Node, Integer> nodeIndexMap = new HashMap<>();
+        for (int i = 0; i < network.size(); i++) {
+            nodeIndexMap.putIfAbsent(network.get(i).position, i);
+        }
+        char[] instructions = lines.get(0).toCharArray();
+        int[] curNEs = getStartingPositions(nodeIndexMap);
+
+        BigInteger output = new BigInteger("1");
+        for (int i = 0; i < curNEs.length; i++) {
+            output = lcm(output, BigInteger.valueOf(getSteps(network, instructions, curNEs[i])));
+        }
+
+        return output.longValue();
+    }
+
+    public static BigInteger lcm(BigInteger number1, BigInteger number2) {
+        BigInteger gcd = number1.gcd(number2);
+        BigInteger absProduct = number1.multiply(number2).abs();
+        return absProduct.divide(gcd);
+    }
+
+
+    private static int getSteps(List<NetworkEntry> network, char[] instructions, int curNE) {
+        int i = 0;
+        int steps = 0;
+
+        while (network.get(curNE).position.name.charAt(2) != 'Z') {
+            int move = instructions[i] == 'R' ? 1 : instructions[i] == 'L' ? 0 : -1;
+            Node next = network.get(curNE).destinations[move];
+            curNE = getIndex(network, next.name);
+            i = (i + 1) % instructions.length;
+            steps++;
+        }
+        return steps;
+    }
+
+    private static long oldProblem2(String filename) throws IOException {
         List<String> lines = FileReader.readInput(filename);
         List<NetworkEntry> network = new ArrayList<>();
         lines.stream().filter(x -> x.contains("=")).forEach(y -> network.add(new NetworkEntry(y)));
