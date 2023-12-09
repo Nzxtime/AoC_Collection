@@ -20,4 +20,10 @@ public class Helper {
         }
         return output;
     }
+
+    public static int[] reverseIntArray(int[] a) {
+        List<Integer> temp = new ArrayList<>(Arrays.stream(a).boxed().toList());
+        Collections.reverse(temp);
+        return temp.stream().mapToInt(Integer::intValue).toArray();
+    }
 }
