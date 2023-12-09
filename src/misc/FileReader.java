@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,17 @@ public class FileReader {
         for (int i = 0; i < lines.size(); i++) {
             String line = lines.get(i);
             output[i] = line.toCharArray();
+        }
+
+        return output;
+    }
+
+    public static int[][] getInputAs2DIntegerArray(String filename) throws IOException {
+        List<String> lines = FileReader.readInput(filename);
+        int[][] output = new int[lines.size()][];
+
+        for (int i = 0; i < lines.size(); i++) {
+            output[i] = Arrays.stream(lines.get(i).split("\\s+")).mapToInt(Integer::parseInt).toArray();
         }
 
         return output;
