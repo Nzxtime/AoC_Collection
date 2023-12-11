@@ -2,6 +2,7 @@ package aoc2023;
 
 import misc.FileReader;
 import misc.Point;
+import misc.PointLong;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Set;
 public class Day11 {
     public static void main(String[] args) throws IOException {
         System.out.println(problem1("resources/2023/2023_11.txt"));
+        System.out.println(problem2("resources/2023/2023_11.txt"));
         System.out.println(problem2("resources/2023/test.txt"));
     }
 
@@ -29,22 +31,22 @@ public class Day11 {
         return true;
     }
 
-    private static int problem1(String filename) throws IOException {
-        List<Point> points = generatePointList(filename, 1);
+    private static long problem1(String filename) throws IOException {
+        List<PointLong> points = generatePointList(filename, 1);
         return getSumOfManhattenDistances(points);
     }
 
-    private static int problem2(String filename) throws IOException {
-        List<Point> points = generatePointList(filename, 10);
+    private static long problem2(String filename) throws IOException {
+        List<PointLong> points = generatePointList(filename, 1000000);
         return getSumOfManhattenDistances(points);
     }
 
-    private static int getSumOfManhattenDistances(List<Point> points) {
-        Set<Point> done = new HashSet<>();
-        int sum = 0;
+    private static long getSumOfManhattenDistances(List<PointLong> points) {
+        Set<PointLong> done = new HashSet<>();
+        long sum = 0;
 
-        for (Point point : points) {
-            for (Point point1 : points) {
+        for (PointLong point : points) {
+            for (PointLong point1 : points) {
                 if (done.contains(point1)) continue;
                 sum += point.getManhattenDistance(point1);
             }
@@ -53,9 +55,9 @@ public class Day11 {
         return sum;
     }
 
-    private static List<Point> generatePointList(String filename, int multiplicator) throws IOException {
+    private static List<PointLong> generatePointList(String filename, int multiplicator) throws IOException {
         char[][] image = FileReader.getInputAsCharArray(filename);
-        List<Point> points = new ArrayList<>();
+        List<PointLong> points = new ArrayList<>();
 
         Set<Integer> expandedRows = new HashSet<>();
         for (int i = 0; i < image.length; i++) {
@@ -71,7 +73,7 @@ public class Day11 {
             if (expandedRows.contains(i)) x += (multiplicator - 1);
             for (int j = 0, y = 0; j < image[i].length; j++, y++) {
                 if (expandedCols.contains(j)) y += (multiplicator - 1);
-                if (image[i][j] == '#') points.add(new Point(x, y));
+                if (image[i][j] == '#') points.add(new PointLong(x, y));
             }
         }
         return points;
