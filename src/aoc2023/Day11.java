@@ -1,7 +1,6 @@
 package aoc2023;
 
 import misc.FileReader;
-import misc.Point;
 import misc.PointLong;
 
 import java.io.IOException;
@@ -14,7 +13,6 @@ public class Day11 {
     public static void main(String[] args) throws IOException {
         System.out.println(problem1("resources/2023/2023_11.txt"));
         System.out.println(problem2("resources/2023/2023_11.txt"));
-        System.out.println(problem2("resources/2023/test.txt"));
     }
 
     private static boolean doesRowExpand(char[] row) {
@@ -32,7 +30,7 @@ public class Day11 {
     }
 
     private static long problem1(String filename) throws IOException {
-        List<PointLong> points = generatePointList(filename, 1);
+        List<PointLong> points = generatePointList(filename, 2);
         return getSumOfManhattenDistances(points);
     }
 
