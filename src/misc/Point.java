@@ -76,6 +76,10 @@ public class Point implements Comparable<Point> {
         return Math.abs(this.x) + Math.abs(this.y);
     }
 
+    public int getManhattenDistance(Point o) {
+        return Math.abs(o.x - this.x) + Math.abs(o.y - this.y);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
