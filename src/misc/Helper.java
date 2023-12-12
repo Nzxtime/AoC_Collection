@@ -3,10 +3,6 @@ package misc;
 import java.util.*;
 
 public class Helper {
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String YELLOW_BG = "\u001B[43m";
-    public static final String WHITE_BG = "\u001B[47m";
-
     public static List<Character> stringAsCharacterList(String s) {
         List<Character> output = new ArrayList<>();
 

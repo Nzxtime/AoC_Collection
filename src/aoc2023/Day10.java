@@ -3,9 +3,9 @@ package aoc2023;
 import misc.FileReader;
 import misc.Helper;
 import misc.Point;
+import misc.ConsoleColor;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,7 +38,7 @@ public class Day10 {
 
         private Point curPos;
 
-        private static Map<Character, Point> move = new HashMap<>();
+        private static final Map<Character, Point> move = new HashMap<>();
 
         static {
             move.put('|', new Point(1, 0));
@@ -78,9 +78,9 @@ public class Day10 {
 
             for (int i = 0; i < maze.length; i++) {
                 for (int j = 0; j < maze[i].length; j++) {
-                    if (this.curPos.equals(new Point(i, j))) output.append(Helper.WHITE_BG);
-                    else if (this.startPos.equals(new Point(i, j))) output.append(Helper.YELLOW_BG);
-                    output.append(maze[i][j]).append(Helper.ANSI_RESET);
+                    if (this.curPos.equals(new Point(i, j))) output.append(ConsoleColor.WHITE_BACKGROUND);
+                    else if (this.startPos.equals(new Point(i, j))) output.append(ConsoleColor.YELLOW_BACKGROUND);
+                    output.append(maze[i][j]).append(ConsoleColor.RESET);
                 }
                 output.append("\n");
             }
