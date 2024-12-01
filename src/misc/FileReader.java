@@ -47,4 +47,16 @@ public class FileReader {
 
         return output;
     }
+
+    public static int[][] getInputAs2DIntegerArray_2cols(String filename) throws IOException {
+        List<String> lines = FileReader.readInput(filename);
+        int[][] output = new int[2][lines.size()];
+
+        for (int i = 0; i < lines.size(); i++) {
+            output[0][i] = Integer.parseInt(lines.get(i).split("\\s+")[0]);
+            output[1][i] = Integer.parseInt(lines.get(i).split("\\s+")[1]);
+        }
+
+        return output;
+    }
 }
