@@ -34,7 +34,6 @@ public class Day01 {
 
         Map<Integer, Long> numberOccurances = Arrays.stream(input[1]).boxed().collect(Collectors.groupingBy(Integer::intValue, Collectors.counting()));
 
-        System.out.println(numberOccurances);
         long similarityScore = 0;
         for (int i = 0; i < input[0].length; i++) {
             int value = input[0][i];
