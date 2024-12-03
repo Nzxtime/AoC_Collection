@@ -28,6 +28,16 @@ public class Helper {
                 .collect(Collectors.groupingBy(Integer::intValue, Collectors.counting()));
     }
 
+    public static int[] removeNthElement(int[] input, int n) {
+        List<Integer> temp = new ArrayList<>(Arrays.stream(input)
+                .boxed()
+                .toList());
+
+        temp.remove(n);
+
+        return temp.stream().mapToInt(Integer::intValue).toArray();
+    }
+
     public static int[] reverseIntArray(int[] a) {
         List<Integer> temp = new ArrayList<>(Arrays.stream(a).boxed().toList());
         Collections.reverse(temp);
