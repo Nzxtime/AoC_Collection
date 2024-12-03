@@ -1,6 +1,7 @@
 package misc;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Helper {
     public static List<Character> stringAsCharacterList(String s) {
@@ -19,6 +20,12 @@ public class Helper {
             output.merge(c, 1, Integer::sum);
         }
         return output;
+    }
+
+    public static Map<Integer, Long> generateIntegerMap(int[] input) {
+        return Arrays.stream(input)
+                .boxed()
+                .collect(Collectors.groupingBy(Integer::intValue, Collectors.counting()));
     }
 
     public static int[] reverseIntArray(int[] a) {
