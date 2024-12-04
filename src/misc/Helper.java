@@ -43,4 +43,35 @@ public class Helper {
         Collections.reverse(temp);
         return temp.stream().mapToInt(Integer::intValue).toArray();
     }
+
+    public static char[][] rotate2DArrayRight(char[][] input) {
+        if (input.length == 0) return input;
+        int maxLength = Arrays.stream(input).mapToInt(x -> x.length).max().getAsInt();
+        char[][] output = new char[maxLength][input.length];
+
+        for (int i = 0; i < input.length; i++) {
+            for (int j = 0; j < input[i].length; j++) {
+                output[j][i] = input[input.length - 1 - i][j];
+            }
+        }
+        return output;
+    }
+
+    public static char[][] rotate2DArrayLeft(char[][] input) {
+        if (input.length == 0) return input;
+        int maxLength = Arrays.stream(input).mapToInt(x -> x.length).max().getAsInt();
+        char[][] output = new char[maxLength][input.length];
+
+        for (int i = 0; i < input.length; i++) {
+            for (int j = 0; j < input[i].length; j++) {
+                output[j][i] = input[i][input[i].length - 1 - j];
+            }
+        }
+
+        return output;
+    }
+
+    public static boolean inArrayBounds(char[][] input, int x, int y) {
+        return x >= 0 && x < input.length && y >= 0 && y < input[x].length;
+    }
 }
