@@ -49,37 +49,23 @@ public class Day04 {
         return true;
     }
 
-    private static boolean checkIfMASCrossUpDown(char[][] input, int x, int y) {
-        int horizontal = 'M' + 'S';
-        int vertical = horizontal;
-
-        if (!Helper.inArrayBounds(input, x, y) || input[x][y] != 'A') return false;
-        if (!Helper.inArrayBounds(input, x - 1, y) || (input[x - 1][y] != 'M' && input[x - 1][y] != 'S')) return false;
-        horizontal -= input[x - 1][y];
-        if (!Helper.inArrayBounds(input, x + 1, y) || (input[x + 1][y] != 'M' && input[x + 1][y] != 'S')) return false;
-        horizontal -= input[x + 1][y];
-
-        if (!Helper.inArrayBounds(input, x, y - 1) || (input[x][y - 1] != 'M' && input[x][y - 1] != 'S')) return false;
-        vertical -= input[x][y - 1];
-        if (!Helper.inArrayBounds(input, x, y + 1) || (input[x][y + 1] != 'M' && input[x][y + 1] != 'S')) return false;
-        vertical -= input[x][y + 1];
-
-        return horizontal == 0 && vertical == 0;
-    }
-
     private static boolean checkIfMASCrossDiags(char[][] input, int x, int y) {
         int DLUR = 'M' + 'S'; // Down Left Up Right
         int DRUL = DLUR; // Down Right Up Left
 
         if (!Helper.inArrayBounds(input, x, y) || input[x][y] != 'A') return false;
-        if (!Helper.inArrayBounds(input, x - 1, y - 1) || (input[x - 1][y - 1] != 'M' && input[x - 1][y - 1] != 'S')) return false;
+        if (!Helper.inArrayBounds(input, x - 1, y - 1) || (input[x - 1][y - 1] != 'M' && input[x - 1][y - 1] != 'S'))
+            return false;
         DLUR -= input[x - 1][y - 1];
-        if (!Helper.inArrayBounds(input, x + 1, y + 1) || (input[x + 1][y + 1] != 'M' && input[x + 1][y + 1] != 'S')) return false;
+        if (!Helper.inArrayBounds(input, x + 1, y + 1) || (input[x + 1][y + 1] != 'M' && input[x + 1][y + 1] != 'S'))
+            return false;
         DLUR -= input[x + 1][y + 1];
 
-        if (!Helper.inArrayBounds(input, x + 1, y - 1) || (input[x + 1][y - 1] != 'M' && input[x + 1][y - 1] != 'S')) return false;
+        if (!Helper.inArrayBounds(input, x + 1, y - 1) || (input[x + 1][y - 1] != 'M' && input[x + 1][y - 1] != 'S'))
+            return false;
         DRUL -= input[x + 1][y - 1];
-        if (!Helper.inArrayBounds(input, x - 1, y + 1) || (input[x - 1][y + 1] != 'M' && input[x - 1][y + 1] != 'S')) return false;
+        if (!Helper.inArrayBounds(input, x - 1, y + 1) || (input[x - 1][y + 1] != 'M' && input[x - 1][y + 1] != 'S'))
+            return false;
         DRUL -= input[x - 1][y + 1];
 
         return DLUR == 0 && DRUL == 0;
@@ -89,7 +75,6 @@ public class Day04 {
         int counter = 0;
         for (int i = 0; i < input.length; i++) {
             for (int j = 0; j < input[i].length; j++) {
-                if (checkIfMASCrossUpDown(input, i, j)) counter++;
                 if (checkIfMASCrossDiags(input, i, j)) counter++;
             }
         }
