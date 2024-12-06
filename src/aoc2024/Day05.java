@@ -58,39 +58,6 @@ public class Day05 {
         return true;
     }
 
-
-    public static PageUpdate getOrderUpdate(Map<Integer, ArrayList<Integer>> mapping, PageUpdate update) {
-        Queue<Integer> queue = new PriorityQueue<>();
-        List<Integer> ordered = new ArrayList<>();
-
-        for (int page : update.pages) {
-            queue.add(page);
-        }
-
-        while (queue.peek() != null) {
-            int page = queue.poll();
-            int wrongPage = getWrongPage(mapping, update, page);
-
-            if (wrongPage == 0) ordered.add(page);
-            else {
-                ordered.add(wrongPage);
-                queue.add(page);
-            }
-        }
-
-        return new PageUpdate(ordered);
-    }
-
-    public static int getWrongPage(Map<Integer, ArrayList<Integer>> mapping, PageUpdate update, int x) {
-        int[] pages = update.pages;
-        int i = Helper.getIndexOfFirstFound(pages, x);
-        for (int j = i + 1; j < pages.length; j++) {
-            if (!mapping.containsKey(pages[i])) continue;
-            if (mapping.get(pages[i]).contains(pages[j])) return pages[j];
-        }
-        return 0;
-    }
-
     public static long problem2(String filename) throws IOException {
         List<String> input = FileReader.readInput(filename);
 
@@ -112,10 +79,22 @@ public class Day05 {
 
         int result = 0;
         for (PageUpdate incorrectUpdate : incorrectUpdates) {
-            result += getOrderUpdate(rules.getRequirements(), incorrectUpdate).getMiddlePage();
+            incorrectUpdate.sort(rules);
+            System.out.println(incorrectUpdate);
+            result += incorrectUpdate.getMiddlePage();
         }
 
         return result;
+    }
+
+    private static int comparePages(int a, int b, Map<Integer, ArrayList<Integer>> mapping) {
+        if (!mapping.containsKey(b)) return 0;
+        if (mapping.get(b).contains(a)) {
+            for (Integer integer : mapping.get(b)) {
+                if (comparePages(b, integer, mapping) != 0) return -1;
+            }
+        }
+        return 1;
     }
 
     private static class PageRule {
@@ -179,6 +158,13 @@ public class Day05 {
 
         public int getMiddlePage() {
             return pages[pages.length / 2];
+        }
+
+        public void sort(PageRuleset ruleset) {
+            Map<Integer, ArrayList<Integer>> mappings = ruleset.getRequirements();
+            List<Integer> pages = new ArrayList<>(Arrays.stream(this.pages).boxed().toList());
+
+            pages.sort((Integer a, Integer b) -> comparePages(a, b, mappings));
         }
     }
 }
