@@ -74,4 +74,8 @@ public class Helper {
     public static boolean inArrayBounds(char[][] input, int x, int y) {
         return x >= 0 && x < input.length && y >= 0 && y < input[x].length;
     }
+
+    public static int getIndexOfFirstFound(int[] input, int a) {
+        return Arrays.stream(input).boxed().toList().indexOf(a);
+    }
 }
