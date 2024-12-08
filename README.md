@@ -14,6 +14,7 @@ These are my solutions for [AoC](https://adventofcode.com/)
 | [Day 4](https://adventofcode.com/2024/day/4) | ⭐ | ⭐ |
 | [Day 5](https://adventofcode.com/2024/day/5) | ⭐ |   |
 | [Day 6](https://adventofcode.com/2024/day/6) | ⭐ |   |
+| [Day 8](https://adventofcode.com/2024/day/8) | ⭐ | ⭐ |
 <!--- advent_readme_stars_2024 table --->
 
 <!--- advent_readme_stars_2023 table --->
