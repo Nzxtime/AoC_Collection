@@ -80,6 +80,18 @@ public class Point implements Comparable<Point> {
         return Math.abs(o.x - this.x) + Math.abs(o.y - this.y);
     }
 
+    public double getEuclideanDistance(Point o) {
+        return Math.sqrt(Math.pow(this.getX() + o.getX(), 2) + Math.pow(this.getY() + o.getY(), 2));
+    }
+
+    public boolean inRangeInclusive(int x_start, int x_end, int y_start, int y_end) {
+        return (x_start <= this.x) && (this.x <= x_end) && (y_start <= this.y) && (this.y <= y_end);
+    }
+
+    public boolean inRangeExclusive(int x_start, int x_end, int y_start, int y_end) {
+        return (x_start < this.x) && (this.x < x_end) && (y_start < this.y) && (this.y < y_end);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
