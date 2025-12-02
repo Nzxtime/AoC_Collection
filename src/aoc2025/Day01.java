@@ -10,8 +10,9 @@ import java.util.stream.Collectors;
 
 public class Day01 {
     public static void main(String[] args) throws IOException {
-        System.out.println(problem1("resources/2025/2025_01.txt"));
-        System.out.println(problem2("resources/2025/2025_01.txt"));
+        System.out.printf("Solution 1: %d\n", problem1("resources/2025/2025_01.txt"));
+        System.out.printf("Solution 2: %d\n", problem2("resources/2025/2025_01.txt"));
+        System.out.println(problem2("resources/2025/2025_01_nick.txt"));
     }
 
     public static int problem1(String filename) throws IOException {
@@ -50,16 +51,16 @@ public class Day01 {
             steps = Math.floorMod(steps, base) * direction;
 
             int a = position;
-            System.out.printf("Current position: %d, direction: %d, steps: %d, mod_passes: %d, ", position, direction, steps, passes);
+            //System.out.printf("Current position: %d, direction: %d, steps: %d, mod_passes: %d, ", position, direction, steps, passes);
 
             if (position != 0 && ((position + steps) <= 0 || (position + steps) >= 100)) passes++;
             position = Math.floorMod(position + steps, base);
 
-            System.out.printf("next position: %d, passes by zero: %d\n", position, passes);
+            //System.out.printf("next position: %d, passes by zero: %d\n", position, passes);
 
             counter += passes;
 
-            compareSolutions(passes, crosses(a, steps * direction, direction, base));
+            compareSolutions(passes, crosses(a, Integer.parseInt(s.substring(1)), direction, base));
         }
 
         return counter;
