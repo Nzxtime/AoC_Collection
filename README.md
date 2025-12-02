@@ -3,6 +3,8 @@
 These are my solutions for [AoC](https://adventofcode.com/)
 
 ## Completed days
+<!--- advent_readme_stars_2025 table --->
+
 <!--- advent_readme_stars_2024 table --->
 ### 2024 Results
 
