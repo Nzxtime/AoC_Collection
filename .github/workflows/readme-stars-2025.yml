@@ -1,0 +1,22 @@
+name: Update README ⭐ 2025
+on:
+  schedule:
+    - cron: "0 1/4 * * *"  # Every 4 hours
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: k2bd/advent-readme-stars@v1.0.3
+        with:
+          userId: ${{ secrets.AOC_USER_ID }}
+          leaderboardId: ${{ secrets.AOC_USER_ID }}
+          sessionCookie: ${{ secrets.AOC_SESSION }}
+          year: 2024
+          tableMarker: '<!--- advent_readme_stars_2025 table --->'
+          headerPrefix: '###'
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update README stars of year 2025
