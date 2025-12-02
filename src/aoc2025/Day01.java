@@ -51,12 +51,12 @@ public class Day01 {
             steps = Math.floorMod(steps, base) * direction;
 
             int a = position;
-            //System.out.printf("Current position: %d, direction: %d, steps: %d, mod_passes: %d, ", position, direction, steps, passes);
+            System.out.printf("Current position: %d, direction: %d, steps: %d, mod_passes: %d, ", position, direction, steps, passes);
 
             if (position != 0 && ((position + steps) <= 0 || (position + steps) >= 100)) passes++;
             position = Math.floorMod(position + steps, base);
 
-            //System.out.printf("next position: %d, passes by zero: %d\n", position, passes);
+            System.out.printf("next position: %d, passes by zero: %d\n", position, passes);
 
             counter += passes;
 

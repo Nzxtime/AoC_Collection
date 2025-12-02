@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,6 +56,16 @@ public class FileReader {
         for (int i = 0; i < lines.size(); i++) {
             output[0][i] = Integer.parseInt(lines.get(i).split("\\s+")[0]);
             output[1][i] = Integer.parseInt(lines.get(i).split("\\s+")[1]);
+        }
+
+        return output;
+    }
+
+    public static List<String> getInputAsStringListSplitted(String filename, String delimiter) throws IOException {
+        List<String> output = new ArrayList<>();
+
+        for (String readAllLine : Files.readAllLines(Paths.get(filename))) {
+            Collections.addAll(output, readAllLine.split(delimiter));
         }
 
         return output;
