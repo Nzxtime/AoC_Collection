@@ -14,7 +14,7 @@ jobs:
           userId: ${{ secrets.AOC_USER_ID }}
           leaderboardId: ${{ secrets.AOC_USER_ID }}
           sessionCookie: ${{ secrets.AOC_SESSION }}
-          year: 2024
+          year: 2025
           tableMarker: '<!--- advent_readme_stars_2025 table --->'
           headerPrefix: '###'
       - uses: stefanzweifel/git-auto-commit-action@v5
