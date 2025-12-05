@@ -10,6 +10,7 @@ These are my solutions for [AoC](https://adventofcode.com/)
 | :---: | :---: | :---: |
 | [Day 1](https://adventofcode.com/2025/day/1) | ⭐ | ⭐ |
 | [Day 2](https://adventofcode.com/2025/day/2) | ⭐ | ⭐ |
+| [Day 3](https://adventofcode.com/2025/day/3) | ⭐ |   |
 <!--- advent_readme_stars_2025 table --->
 
 <!--- advent_readme_stars_2024 table --->
